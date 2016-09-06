@@ -1,7 +1,20 @@
+;; set PATH
+(setenv "PATH" (concat "/Library/TeX/texbin:" (getenv "PATH")))
+(setq exec-path (append '("/Library/TeX/texbin:") exec-path))
+
 (add-to-list 'load-path "~/.emacs.d")
 (setq c-basic-offset 4) ; indents 4 chars                                                                                                              
 (setq tab-width 4)          ; and 4 char wide for TAB
 (setq indent-tabs-mode nil) ; And force use of spaces
+
+(require 'package) ;; You might already have this line
+(add-to-list 'package-archives
+             '("melpa" . "https://melpa.org/packages/"))
+(when (< emacs-major-version 24)
+  ;; For important compatibility libraries like cl-lib
+  (add-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/")))
+(package-initialize) ;; You might already have this line
+
 
 (setq inhibit-splash-screen t)         ; hide welcome screen
 (setq inhibit-startup-message t)  ; hide start up message
@@ -50,7 +63,8 @@
 
 (setq org-agenda-files (list "~/org/work.org"
                              "~/org/school.org" 
-                             "~/org/home.org"))
+                             "~/org/home.org"
+                             "~/org/research.org"))
 
 (setq org-startup-indented t)
 (setq org-hide-leading-stars t)
@@ -69,6 +83,10 @@
 (setq org-completion-use-ido t)
 (setq org-indent-mode t)
 (setq org-startup-truncated nil)
+(setq org-default-notes-file (concat org-directory "/notes.org"))
+     (define-key global-map "\C-cc" 'org-capture)
+
+
 (setq auto-fill-mode -1)
 (setq-default fill-column 99999)
 (setq fill-column 99999)
@@ -82,6 +100,7 @@
 (add-to-list 'auto-mode-alist '("\\.markdown\\'" . markdown-mode))
 (add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode))
 
-;; (add-to-list 'ac-dictionary-directories "~/.emacs.d/dict")
-;; (require 'auto-complete-config)
-;; (ac-config-default)
+(add-to-list 'load-path "~/.emacs.d")
+(require 'auto-complete-config)
+(add-to-list 'ac-dictionary-directories "~/.emacs.d/dict")
+(ac-config-default)
